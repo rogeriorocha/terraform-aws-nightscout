@@ -10,7 +10,7 @@ terraform {
 # Local vars
 locals {
   tags = {
-    env = "prod"
+    env = "prd"
     app = "nightscout"
   }
 }

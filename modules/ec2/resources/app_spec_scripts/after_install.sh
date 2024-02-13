@@ -15,6 +15,6 @@ sudo cp -R tmp/public /tmp/.
 # Get ENV vars from SSM
 touch .env
 # escape values with @sh
-#aws ssm get-parameters-by-path --region ap-southeast-2 --path /nightscout --query 'Parameters[*].{Name:Name,Value:Value}' --with-decryption | jq -r '.[] | "\(.Name|split("/")|.[-1]|ascii_upcase)=\(.Value|@sh)"' > .env
+#aws ssm get-parameters-by-path --region us-east-1 --path /nightscout --query 'Parameters[*].{Name:Name,Value:Value}' --with-decryption | jq -r '.[] | "\(.Name|split("/")|.[-1]|ascii_upcase)=\(.Value|@sh)"' > .env
 # wraps values in double quotes with no escaping
-#aws ssm get-parameters-by-path --region ap-southeast-2 --path /nightscout --query 'Parameters[*].{Name:Name,Value:Value}' --with-decryption | jq -r '.[] | "\(.Name|split("/")|.[-1]|ascii_upcase)=\"\(.Value)\""' > .env
+#aws ssm get-parameters-by-path --region us-east-1 --path /nightscout --query 'Parameters[*].{Name:Name,Value:Value}' --with-decryption | jq -r '.[] | "\(.Name|split("/")|.[-1]|ascii_upcase)=\"\(.Value)\""' > .env
