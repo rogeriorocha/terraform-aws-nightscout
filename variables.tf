@@ -1,5 +1,5 @@
 variable "port" {
-  default     = 80
+  default     = 8080
   description = "Port to run webserver on"
 }
 
@@ -20,9 +20,17 @@ variable "ec2_ssh_public_key_path" {
   default = "config/nightscout-ec2-key.pub"
 }
 
+
+variable "ec2_instance_type" {
+  type        = string
+  default     = "t3a.micro"
+  description = "AWS EC2 instance size to use"  
+}
+
+
 variable "my_ip" {
   description = "Your IP address to access the EC2 via SSH"
-  default = null
+  default = "177.66.209.69"
 }
 
 variable "git_repo" {
@@ -32,12 +40,13 @@ variable "git_repo" {
 
 variable "git_owner" {
   description = "Your GitHub username"
+  default = "rogeriorocha"
 }
 
 variable "tags" {
   type = map(string)
   default = {
-    env = "prod"
+    env = "prd"
     app  = "nightscout"
   }
   description = "tags for all the resources, if any"
