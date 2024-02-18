@@ -58,6 +58,7 @@ module "ec2" {
   ssh_public_key_path   = var.ec2_ssh_public_key_path
   your_ip_address       = var.my_ip
   instance_profile_name = module.ec2_role.instance_profile.name
+  instance_type         = var.ec2_instance_type
   tags                  = local.tags
 }
 
