@@ -78,3 +78,12 @@ module "codepipeline" {
   artifact_bucket     = aws_s3_bucket.codepipeline_bucket
   tags                = local.tags
 }
+
+# Route53
+module "route53" {
+  source      = "./modules/route53"
+  tags        = local.tags
+  ip          = module.ec2.ec2_ip_address
+  zone_name   = var.route53_zone_name
+  record_name = var.route53_record_name
+}

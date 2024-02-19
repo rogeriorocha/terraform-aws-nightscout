@@ -51,3 +51,15 @@ variable "tags" {
   }
   description = "tags for all the resources, if any"
 }
+
+variable "route53_zone_name"{
+  type        = string
+  default     = "leguedex.com"
+  description = "Route53 zone name"
+}
+
+variable "route53_record_name"{
+  type        = string
+  default     = "nightscout"
+  description = "Route53 record name"
+}
