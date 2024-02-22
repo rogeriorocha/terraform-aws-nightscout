@@ -25,7 +25,7 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
     ec2_tag_filter {
       key   = "env"
       type  = "KEY_AND_VALUE"
-      value = "prod"
+      value = "prd"
     }
 
     ec2_tag_filter {
