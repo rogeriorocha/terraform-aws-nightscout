@@ -1,44 +1,43 @@
+#!/bin/sh
+
 export TERM=xterm-256color
 export CLICOLOR_FORCE=true
 export RICHGO_FORCE_COLOR=1
 
 export ENVIRONMENT=prd
 
-
-
 default: prepare fmt init validate plan
 
-
 prepare:
-	@ export MY_IP=`curl --silent https://ipecho.net/plain`
-	@ envsubst < ./config/template/terraform-${ENVIRONMENT}.tfvars > terraform-${ENVIRONMENT}.tfvars
+	MY_IP=$(shell wget -q "http://api.ipify.org" -O -) \
+		envsubst  < ./config/template/terraform-${ENVIRONMENT}.tfvars > terraform-${ENVIRONMENT}.tfvars
 
 init:
-	@ terraform init
+	terraform init
 
 fmt:
-	@ terraform fmt
+	terraform fmt
 
 validate:
-	@ terraform validate
+	terraform validate
 
 plan:
-	@ terraform plan -input=false -var-file="terraform-${ENVIRONMENT}.tfvars" -out=create.tfplan
+	terraform plan -input=false -var-file="terraform-${ENVIRONMENT}.tfvars" -out=create.tfplan
 
 apply:
-	@ terraform apply -input=false -auto-approve create.tfplan
+	terraform apply -input=false -auto-approve create.tfplan
 
 destroy-plan:
-	@ terraform plan -destroy -var-file="terraform-${ENVIRONMENT}.tfvars" -out destroy.tfplan
+	terraform plan -destroy -var-file="terraform-${ENVIRONMENT}.tfvars" -out destroy.tfplan
 
 destroy: destroy-plan
-	@ terraform apply destroy.tfplan
+	terraform apply destroy.tfplan
 
 output:
-	@ terraform output
+	terraform output
 
 infracost:
-	@ infracost --usage-file=infracost-usage.yml --show-skipped --terraform-plan-flags="-var-file=terraform-${ENVIRONMENT}.tfvars" breakdown --path .
+	infracost --usage-file=infracost-usage.yml --show-skipped --terraform-plan-flags="-var-file=terraform-${ENVIRONMENT}.tfvars" breakdown --path .
 
 
 #all: validate plan apply
