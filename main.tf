@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "4.38.0"
     }
+    ansible = {
+      version = "~> 1.1.0"
+      source  = "ansible/ansible"
+    }
   }
 }
 
@@ -19,7 +23,7 @@ locals {
 # S3 Bucket for codedeploy/codepipeline
 resource "aws_s3_bucket" "codepipeline_bucket" {
   bucket_prefix = "nightscout-codepipeline-"
-  tags = var.tags
+  tags          = var.tags
 }
 resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
   bucket = aws_s3_bucket.codepipeline_bucket.id
@@ -29,9 +33,9 @@ resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
 
 # Nightscout config in SSM
 module "ssm" {
-  source        = "./modules/ssm"
-  port          = var.port
-  tags          = local.tags
+  source = "./modules/ssm"
+  port   = var.port
+  tags   = local.tags
 }
 
 
@@ -86,4 +90,12 @@ module "route53" {
   ip          = module.ec2.ec2_ip_address
   zone_name   = var.route53_zone_name
   record_name = var.route53_record_name
+}
+
+# Ansible
+module "ansible" {
+  ssh_private_key_path = var.ec2_ssh_private_key_path
+  source               = "./modules/ansible"
+  username             = "ec2-user"
+  ip                   = module.ec2.ec2_ip_address
 }
